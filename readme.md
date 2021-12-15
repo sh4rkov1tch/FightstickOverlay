@@ -1,5 +1,7 @@
 # FightstickOverlay
 
+![Screenshot](https://i.imgur.com/6KGYsoN.png)
+
 ## Introduction
 
 I made this app, intended to be used as an overlay on OBS because I didn't like any of the curent solutions.
