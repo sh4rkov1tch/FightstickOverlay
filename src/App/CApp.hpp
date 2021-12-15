@@ -13,7 +13,7 @@ class CApp{
 private:
     std::vector<CButton> m_vecButtons;
     
-    CStick*  m_stick;
+    CStick*  m_pStick;
 
     void _PushButtonsToVector(const char* strCfgPath = "Configs/default.ini");
 public:
