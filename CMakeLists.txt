@@ -24,6 +24,7 @@ include_directories(FightstickOverlay
 )
 
 target_link_libraries(FightstickOverlay
+    mingw32
     raylib
     opengl32
     glu32
@@ -61,6 +62,7 @@ endif(UNIX)
 target_compile_options(FightstickOverlay PRIVATE
     "-Wall"
     "-O2"
+    "-Wl,--subsystem,windows"
 )
 
 

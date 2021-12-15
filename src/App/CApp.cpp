@@ -102,5 +102,4 @@ void CApp::_PushButtonsToVector(const char* strCfgPath){
         );
     }
 
-    cfgParser.PrintParameters();
 }
