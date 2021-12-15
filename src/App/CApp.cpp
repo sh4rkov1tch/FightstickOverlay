@@ -4,8 +4,8 @@
 #include "CApp.hpp"
 
 CApp::CApp():
-    m_stick(nullptr),
-    m_vecButtons()
+    m_vecButtons(),
+    m_pStick(nullptr)
 {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(854, 480, "Raylib - FightstickOverlay");
@@ -17,7 +17,7 @@ CApp::CApp():
 }
 
 CApp::~CApp(){
-    delete m_stick;
+    delete m_pStick;
 }
 
 void CApp::Run(){
@@ -44,7 +44,7 @@ void CApp::Run(){
             for(std::vector<CButton>::iterator itButtons = m_vecButtons.begin(); itButtons!=m_vecButtons.end(); itButtons++)
                 (*itButtons).Draw();
 
-            m_stick->Draw();
+            m_pStick->Draw();
             
 
         EndDrawing();
@@ -60,10 +60,10 @@ void CApp::_PushButtonsToVector(const char* strCfgPath){
         m_vecButtons.clear();
     }
     
-    if(m_stick)
-        delete m_stick;
+    if(m_pStick)
+        delete m_pStick;
     
-    m_stick = new CStick(0, cfgParser.GetStickInputMode(), Vector2{854/6, 480/2}, Color{245, 245, 245, 128}, RAYWHITE);
+    m_pStick = new CStick(0, cfgParser.GetStickInputMode(), Vector2{854/6, 480/2}, Color{245, 245, 245, 128}, RAYWHITE);
 
     std::vector<std::vector<int>> btnParams = cfgParser.GetButtonParameters();
     for(std::vector<std::vector<int>>::iterator itBtnParams = btnParams.begin(); itBtnParams!=btnParams.end(); itBtnParams++){
