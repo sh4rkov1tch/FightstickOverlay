@@ -65,40 +65,30 @@ void CApp::_PushButtonsToVector(const char* strCfgPath){
     
     m_pStick = new CStick(0, cfgParser.GetStickInputMode(), Vector2{854/6, 480/2}, Color{245, 245, 245, 128}, RAYWHITE);
 
-    std::vector<std::vector<int>> btnParams = cfgParser.GetButtonParameters();
-    for(std::vector<std::vector<int>>::iterator itBtnParams = btnParams.begin(); itBtnParams!=btnParams.end(); itBtnParams++){
-        std::vector<int> vecIntPrms = (*itBtnParams);
-
-        int iButtonID = vecIntPrms[5];
-        float fVecX = vecIntPrms[0], fVecY = vecIntPrms[1];
-        unsigned char uR = vecIntPrms[2];
-        unsigned char uG = vecIntPrms[3];
-        unsigned char uB = vecIntPrms[4];
+    cfgParser.PrintParams();
+    std::vector<CConfigParser::s_parameters> btnParams = cfgParser.GetButtonParameters();
+    for(std::vector<CConfigParser::s_parameters>::iterator itBtnParams = btnParams.begin(); itBtnParams!=btnParams.end(); itBtnParams++){
+        CConfigParser::s_parameters paramsInput = (*itBtnParams);
         
         m_vecButtons.emplace_back(
             0, 
-            (GamepadButton)iButtonID, 
-            Vector2{fVecX, fVecY},
-            Color{uR, uG, uB, 180},
-            Color{uR, uG, uB, 255}
+            (GamepadButton)paramsInput.iInputID, 
+            paramsInput.vecPos,
+            Color{paramsInput.colR, paramsInput.colG, paramsInput.colB, 180},
+            Color{paramsInput.colR, paramsInput.colG, paramsInput.colB, 255}
         );
     }
 
-    std::vector<std::vector<int>> axesParams = cfgParser.GetAxisParameters(); 
-    for(std::vector<std::vector<int>>::iterator itAxesParams = axesParams.begin(); itAxesParams!=axesParams.end(); itAxesParams++){
-        std::vector<int> vecIntPrms = (*itAxesParams);
-        int iAxisID = vecIntPrms[5];
-        float fVecX = vecIntPrms[0], fVecY = vecIntPrms[1];
-        unsigned char uR = vecIntPrms[2];
-        unsigned char uG = vecIntPrms[3];
-        unsigned char uB = vecIntPrms[4];
+    std::vector<CConfigParser::s_parameters> axesParams = cfgParser.GetAxisParameters(); 
+    for(std::vector<CConfigParser::s_parameters>::iterator itAxesParams = axesParams.begin(); itAxesParams!=axesParams.end(); itAxesParams++){
+        CConfigParser::s_parameters paramsInput = (*itAxesParams);
         
         m_vecButtons.emplace_back(
             0, 
-            (GamepadAxis)iAxisID, 
-            Vector2{fVecX, fVecY},
-            Color{uR, uG, uB, 180},
-            Color{uR, uG, uB, 255}
+            (GamepadAxis)paramsInput.iInputID,
+            paramsInput.vecPos,
+            Color{paramsInput.colR, paramsInput.colG, paramsInput.colB, 180},
+            Color{paramsInput.colR, paramsInput.colG, paramsInput.colB, 255}
         );
     }
 

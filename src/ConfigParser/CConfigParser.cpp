@@ -2,36 +2,48 @@
 
 #include "CConfigParser.hpp"
 
+#define CP_NB_BTNS      (6)
+#define CP_NB_AXIS      (2)
+#define CP_NB_PARAMS    (6)
+
 CConfigParser::CConfigParser(const char* strFilePath){
     INIReader reader(strFilePath);
 
-    std::vector<std::string>vecButtonNames;
-    vecButtonNames = {"btnX", "btnY", "btnRB", "btnLB", "btnA", "btnB"};
+    const char *strTableButtons[CP_NB_BTNS] = {"btnX", "btnY", "btnRB", "btnLB", "btnA", "btnB"};
     
-    std::vector<std::string>vecButtonParamNames;
-    vecButtonParamNames = {"posX", "posY", "colR", "colG", "colB", "btnID"};
+    const char *strTableAxis[CP_NB_AXIS] = {"axisRT", "axisLT"};
 
-    std::vector<std::string>vecAxisParamNames;
-    vecAxisParamNames = {"posX", "posY", "colR", "colG", "colB", "axisID"};
-    
-    std::vector<std::string>vecAxisNames;
-    vecAxisNames = {"axisRT", "axisLT"};
-    
-    for(std::vector<std::string>::iterator itBtnName = vecButtonNames.begin(); itBtnName != vecButtonNames.end(); ++itBtnName){
-        std::vector<int> vecBtnCache;
-        for(std::vector<std::string>::iterator itBtnParams = vecButtonParamNames.begin(); itBtnParams != vecButtonParamNames.end(); ++itBtnParams){
-            vecBtnCache.push_back(reader.GetInteger((*itBtnName), (*itBtnParams), -1));
-        }
-        m_vecButtonsParameters.push_back(vecBtnCache);
+    for(int k=0; k<CP_NB_BTNS; k++){
+        s_parameters params;
+
+        params.vecPos = {
+            (float)reader.GetInteger(strTableButtons[k], "posX", 0),
+            (float)reader.GetInteger(strTableButtons[k], "posY", 0),
+        };
+
+        params.colR = static_cast<uint8_t>(reader.GetInteger(strTableButtons[k], "colR", 0));
+        params.colG = static_cast<uint8_t>(reader.GetInteger(strTableButtons[k], "colG", 0));
+        params.colB = static_cast<uint8_t>(reader.GetInteger(strTableButtons[k], "colB", 0));
+
+
+        params.iInputID = reader.GetInteger(strTableButtons[k], "btnID", 0);
+        m_vecButtonsParameters.push_back(params);
     }
 
-        
-    for(std::vector<std::string>::iterator itAxisName = vecAxisNames.begin(); itAxisName != vecAxisNames.end(); ++itAxisName){
-        std::vector<int> vecAxesCache;
-        for(std::vector<std::string>::iterator itAxisParams = vecAxisParamNames.begin(); itAxisParams != vecAxisParamNames.end(); ++itAxisParams){
-            vecAxesCache.push_back(reader.GetInteger((*itAxisName), (*itAxisParams), -1));
-        }
-        m_vecAxesParameters.push_back(vecAxesCache);
+    for(int k=0; k<CP_NB_AXIS; k++){
+        s_parameters params;
+
+        params.vecPos = {
+            (float)reader.GetInteger(strTableAxis[k], "posX", 0),
+            (float)reader.GetInteger(strTableAxis[k], "posY", 0),
+        };
+
+        params.colR = static_cast<uint8_t>(reader.GetInteger(strTableAxis[k], "colR", 0));
+        params.colG = static_cast<uint8_t>(reader.GetInteger(strTableAxis[k], "colG", 0));
+        params.colB = static_cast<uint8_t>(reader.GetInteger(strTableAxis[k], "colB", 0));
+
+        params.iInputID = reader.GetInteger(strTableAxis[k], "axisID", 0);
+        m_vecAxesParameters.push_back(params);
     }
 
     m_iStickInputMode = reader.GetInteger("Stick", "InputMode", 0);
@@ -39,29 +51,20 @@ CConfigParser::CConfigParser(const char* strFilePath){
 
 CConfigParser::~CConfigParser(){}
 
-std::vector<std::vector<int>> CConfigParser::GetButtonParameters() const{return m_vecButtonsParameters;}
+std::vector<CConfigParser::s_parameters> CConfigParser::GetButtonParameters() const{return m_vecButtonsParameters;}
 
-std::vector<std::vector<int>> CConfigParser::GetAxisParameters() const{return m_vecAxesParameters;}
+std::vector<CConfigParser::s_parameters> CConfigParser::GetAxisParameters() const{return m_vecAxesParameters;}
 
 int  CConfigParser::GetStickInputMode() const {return m_iStickInputMode;}
 
-void CConfigParser::PrintParameters(){
-    std::cout << "----- BUTTONS -----" << std::endl;
-    for(std::vector<std::vector<int>>::iterator itBtns = m_vecButtonsParameters.begin(); itBtns != m_vecButtonsParameters.end(); ++itBtns){
-        for(std::vector<int>::iterator itBtnParams = (*itBtns).begin(); itBtnParams != (*itBtns).end(); ++itBtnParams){
-            std::cout << (*itBtnParams) << '\t';
-        }
-        std::cout << std::endl;
-    }
+void CConfigParser::PrintParams() const{
+    std::vector<CConfigParser::s_parameters>::const_iterator itParams;
 
-    std::cout << "----- AXES -----" << std::endl;
-    for(std::vector<std::vector<int>>::iterator itAxes = m_vecAxesParameters.begin(); itAxes != m_vecAxesParameters.end(); ++itAxes){
-        for(std::vector<int>::iterator itAxesParams = (*itAxes).begin(); itAxesParams != (*itAxes).end(); ++itAxesParams){
-            std::cout << (*itAxesParams) << '\t';
-        }
-        std::cout << std::endl;
-    }
+    for(itParams=m_vecButtonsParameters.begin(); itParams!=m_vecButtonsParameters.end(); ++itParams){
+        std::cout    << "Position: " << std::endl 
+                     << "X:" << (*itParams).vecPos.x << "\tY: " << (*itParams).vecPos.y << std::endl
+                     << "Color (outer):" << std::endl
+                     << "R: " << (*itParams).colR << "\tG: " << (*itParams).colG << "\tB: " << (*itParams).colB << std::endl;
 
-    std::cout << "----- STICK -----" << std::endl;
-    std::cout << m_iStickInputMode << '\t' << std::endl;
+    }
 }
