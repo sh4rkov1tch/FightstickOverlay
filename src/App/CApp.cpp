@@ -65,7 +65,6 @@ void CApp::_PushButtonsToVector(const char* strCfgPath){
     
     m_pStick = new CStick(0, cfgParser.GetStickInputMode(), Vector2{854/6, 480/2}, Color{245, 245, 245, 128}, RAYWHITE);
 
-    cfgParser.PrintParams();
     std::vector<CConfigParser::s_parameters> btnParams = cfgParser.GetButtonParameters();
     for(std::vector<CConfigParser::s_parameters>::iterator itBtnParams = btnParams.begin(); itBtnParams!=btnParams.end(); itBtnParams++){
         CConfigParser::s_parameters paramsInput = (*itBtnParams);
