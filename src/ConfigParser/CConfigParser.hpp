@@ -18,6 +18,7 @@ private:
     // Axis order {RT, LT}
 
     int m_iStickInputMode;
+    int m_iStickDisplayMode;
 
     CConfigParser();
 public:
@@ -26,5 +27,6 @@ public:
     std::vector<CConfigParser::s_parameters> GetButtonParameters() const;
     std::vector<CConfigParser::s_parameters> GetAxisParameters() const;
     int  GetStickInputMode() const;
+    int  GetStickDisplayMode() const;
     void PrintParams() const;
 };

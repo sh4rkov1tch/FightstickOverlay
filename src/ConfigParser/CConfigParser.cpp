@@ -47,6 +47,7 @@ CConfigParser::CConfigParser(const char* strFilePath){
     }
 
     m_iStickInputMode = reader.GetInteger("Stick", "InputMode", 0);
+    m_iStickDisplayMode = reader.GetInteger("Stick", "Wasd", 0);
 }
 
 CConfigParser::~CConfigParser(){}
@@ -56,6 +57,8 @@ std::vector<CConfigParser::s_parameters> CConfigParser::GetButtonParameters() co
 std::vector<CConfigParser::s_parameters> CConfigParser::GetAxisParameters() const{return m_vecAxesParameters;}
 
 int  CConfigParser::GetStickInputMode() const {return m_iStickInputMode;}
+
+int  CConfigParser::GetStickDisplayMode() const {return m_iStickDisplayMode;}
 
 void CConfigParser::PrintParams() const{
     std::vector<CConfigParser::s_parameters>::const_iterator itParams;

@@ -22,4 +22,5 @@ public:
     CStick(int iControllerSlot, int iInputMode, Vector2 vecCenter, Color colStick, Color colBorder);
     ~CStick();
     void Draw();
+    void DrawWASD();
 };

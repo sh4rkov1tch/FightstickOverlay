@@ -44,8 +44,10 @@ void CApp::Run(){
             for(std::vector<CButton>::iterator itButtons = m_vecButtons.begin(); itButtons!=m_vecButtons.end(); itButtons++)
                 (*itButtons).Draw();
 
-            m_pStick->Draw();
-            
+            if(!m_iStickDisplayMode)
+                m_pStick->Draw();
+            else
+                m_pStick->DrawWASD();
 
         EndDrawing();
     }
@@ -62,8 +64,11 @@ void CApp::_PushButtonsToVector(const char* strCfgPath){
     
     if(m_pStick)
         delete m_pStick;
-    
+
+
     m_pStick = new CStick(0, cfgParser.GetStickInputMode(), Vector2{854/6, 480/2}, Color{245, 245, 245, 128}, RAYWHITE);
+    
+    m_iStickDisplayMode = cfgParser.GetStickDisplayMode();
 
     std::vector<CConfigParser::s_parameters> btnParams = cfgParser.GetButtonParameters();
     for(std::vector<CConfigParser::s_parameters>::iterator itBtnParams = btnParams.begin(); itBtnParams!=btnParams.end(); itBtnParams++){
